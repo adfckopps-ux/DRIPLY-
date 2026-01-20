@@ -3,273 +3,402 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DRIPLY | CORE ARCHIVE 2026</title>
-    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
+    <title>DRIPLY | Premium Streetwear</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Inter:wght@300;400;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #050505; --surface: #0f0f0f; --primary: #ffffff;
-            --accent: #ffef00; --border: rgba(255,255,255,0.1);
-            --font-main: 'Space Grotesk', sans-serif; --font-heading: 'Syncopate', sans-serif;
+            --drip-yellow: #e2fb2d;
+            --drip-black: #0a0a0a;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--drip-black);
+            color: white;
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+        }
+        .font-drip { font-family: 'Syncopate', sans-serif; text-transform: uppercase; }
+        .text-drip { color: var(--drip-yellow); }
+        .bg-drip { background-color: var(--drip-yellow); }
+        
+        /* Smooth Page Transitions */
+        .page {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.4s ease-in-out;
+        }
+        .page.active {
+            display: block;
+            opacity: 1;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: var(--bg); color: var(--primary); font-family: var(--font-main); overflow-x: hidden; }
-        .container { max-width: 1400px; margin: 0 auto; padding: 0 2rem; }
-        .hidden { display: none !important; }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: #111; }
+        ::-webkit-scrollbar-thumb { background: var(--drip-yellow); }
 
-        /* NAVIGATION */
-        nav { height: 80px; display: flex; align-items: center; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: rgba(5,5,5,0.8); backdrop-filter: blur(20px); z-index: 1000; }
-        .nav-inner { width: 100%; display: flex; justify-content: space-between; align-items: center; }
-        .logo { font-family: var(--font-heading); font-size: 1.1rem; cursor: pointer; letter-spacing: 4px; }
-        .nav-links a { text-decoration: none; color: white; font-size: 0.75rem; margin-left: 2rem; cursor: pointer; font-weight: 700; transition: 0.3s; }
-        .nav-links a:hover { color: var(--accent); }
-
-        /* HERO LANDING */
-        .hero { 
-            height: 100vh; 
-            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.8)), 
-                        url('https://images.unsplash.com/photo-1551028719-00167b16eac5?q=80&w=2000&auto=format&fit=crop'); 
-            background-size: cover; background-position: center;
-            display: flex; align-items: center; justify-content: center; text-align: center;
+        .product-card:hover img { transform: scale(1.05); }
+        .btn-hover:hover { filter: brightness(1.2); transform: translateY(-2px); }
+        input, select { background: #111 !important; border: 1px solid #333 !important; color: white !important; }
+        
+        /* Category Line Style */
+        .nav-link { position: relative; cursor: pointer; }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0; height: 2px;
+            bottom: -4px; left: 0;
+            background-color: var(--drip-yellow);
+            transition: width 0.3s;
         }
-        .hero h1 { font-family: var(--font-heading); font-size: clamp(3rem, 10vw, 8rem); line-height: 0.8; }
+        .nav-link:hover::after { width: 100%; }
 
-        /* ADMIN DASHBOARD BACKGROUND */
-        .admin-bg {
-            background: linear-gradient(rgba(0,0,0,0.9), rgba(0,0,0,0.9)), 
-                        url('https://images.unsplash.com/photo-1510511459019-5dee997ddfdf?q=80&w=2000&auto=format&fit=crop');
-            background-size: cover; background-attachment: fixed;
+        /* Gallery Overlay */
+        #gallery-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.95);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
         }
-
-        /* PRODUCT GRID */
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 2.5rem; padding: 4rem 0; }
-        .card { background: var(--surface); border: 1px solid var(--border); cursor: pointer; transition: 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
-        .card:hover { transform: translateY(-10px); border-color: var(--accent); }
-        .card img { width: 100%; aspect-ratio: 4/5; object-fit: cover; }
-        .card-meta { padding: 1.5rem; display: flex; justify-content: space-between; align-items: center; font-family: var(--font-heading); font-size: 0.7rem; }
-
-        /* OVERLAYS */
-        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); z-index: 2000; padding-top: 100px; overflow-y: auto; }
-        .close-x { position: fixed; top: 30px; right: 30px; font-size: 2rem; color: white; cursor: pointer; z-index: 2100; transition: 0.3s; }
-        .close-x:hover { color: var(--accent); transform: rotate(90deg); }
-
-        /* PRODUCT DETAIL */
-        .prod-layout { display: grid; grid-template-columns: 1.2fr 1fr; gap: 4rem; padding-bottom: 5rem; }
-        .prod-img { width: 100%; border: 1px solid var(--border); }
-        .swatch-group { display: flex; gap: 15px; margin: 20px 0; }
-        .swatch { width: 35px; height: 35px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; transition: 0.3s; }
-        .swatch.active { border-color: white; box-shadow: 0 0 15px var(--accent); }
-        .size-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 30px; }
-        .size-btn { padding: 15px; border: 1px solid var(--border); text-align: center; cursor: pointer; font-weight: 700; transition: 0.2s; }
-        .size-btn.active { background: white; color: black; border-color: white; }
-
-        /* BUTTONS & INPUTS */
-        .btn { background: white; color: black; border: none; padding: 1.5rem; width: 100%; font-family: var(--font-heading); font-size: 0.8rem; font-weight: 900; cursor: pointer; transition: 0.3s; letter-spacing: 2px; }
-        .btn:hover { background: var(--accent); }
-        .btn:disabled { background: #222; color: #555; cursor: not-allowed; }
-        input { background: rgba(255,255,255,0.05); border: 1px solid var(--border); color: white; padding: 18px; width: 100%; margin-bottom: 1.2rem; font-family: inherit; }
-
-        .admin-item { background: rgba(255,255,255,0.03); border: 1px solid var(--border); padding: 1.5rem; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; backdrop-filter: blur(10px); }
     </style>
 </head>
 <body>
 
-    <nav>
-        <div class="container nav-inner">
-            <div class="logo" onclick="app.view('home')">DRIPLY</div>
-            <div class="nav-links">
-                <a onclick="app.view('shop')">COLLECTION</a>
-                <a onclick="app.view('cart')">BAG (<span id="cart-count">0</span>)</a>
-                <a onclick="app.view('admin-login')">STAFF</a>
-            </div>
+    <nav class="fixed top-0 w-full z-50 px-6 py-4 flex justify-between items-center bg-black/80 backdrop-blur-md border-b border-white/10">
+        <div class="font-drip text-2xl tracking-tighter cursor-pointer" onclick="navigateTo('home')">DRIPLY</div>
+        
+        <div class="hidden md:flex space-x-10 text-[11px] font-black uppercase tracking-[0.2em]">
+            <span class="nav-link" onclick="navigateTo('shop')">Collection</span>
+            <span class="nav-link" onclick="filterByCategory('Jackets')">Jackets</span>
+            <span class="nav-link" onclick="filterByCategory('Jeans')">Jeans</span>
+            <span class="nav-link" onclick="filterByCategory('Accessories')">Accessories</span>
+        </div>
+
+        <div class="flex items-center space-x-6">
+            <button onclick="navigateTo('cart')" class="relative">
+                <span class="text-xl">🛒</span>
+                <span id="cart-count" class="absolute -top-2 -right-2 bg-drip text-black text-[10px] font-black px-1.5 rounded-full">0</span>
+            </button>
+            <button onclick="toggleMobileMenu()" class="md:hidden text-2xl">☰</button>
+            <button id="admin-nav-btn" onclick="navigateTo('admin-login')" class="hidden md:block text-[10px] opacity-50 uppercase font-black hover:opacity-100">Staff</button>
         </div>
     </nav>
 
-    <main id="app">
-        <section id="v-home" class="page">
-            <div class="hero">
-                <div class="hero-content">
-                    <p style="letter-spacing: 5px; margin-bottom: 10px;">ESTABLISHED 2026</p>
-                    <h1>CORE<br>ARCHIVE</h1>
-                    <button class="btn" style="width:auto; padding: 1.5rem 5rem; margin-top: 40px;" onclick="app.view('shop')">SHOP DROP</button>
+    <div id="mobile-menu" class="fixed inset-0 bg-black z-[60] flex flex-col p-10 translate-x-full transition-transform duration-500">
+        <button onclick="toggleMobileMenu()" class="text-4xl self-end">×</button>
+        <div class="flex flex-col space-y-8 font-drip text-2xl mt-10">
+            <span onclick="navigateTo('shop'); toggleMobileMenu()">Collection</span>
+            <span onclick="filterByCategory('Jackets'); toggleMobileMenu()">Jackets</span>
+            <span onclick="filterByCategory('Jeans'); toggleMobileMenu()">Jeans</span>
+            <span onclick="filterByCategory('Accessories'); toggleMobileMenu()">Accessories</span>
+            <hr class="border-white/10">
+            <span onclick="navigateTo('admin-login'); toggleMobileMenu()" class="text-sm opacity-50">Staff Login</span>
+        </div>
+    </div>
+
+    <main class="pt-24 min-h-screen">
+        
+        <section id="home" class="page active px-6 md:px-20">
+            <div class="h-[80vh] flex flex-col justify-center relative overflow-hidden">
+                <h1 class="font-drip text-6xl md:text-[12vw] leading-[0.85] tracking-tighter z-10">DRIP<br><span class="text-drip">SEASON</span></h1>
+                <p class="mt-6 text-gray-400 max-w-md uppercase text-xs tracking-[0.3em] font-bold">Limited drops. Worldwide shipping. Premium materials only.</p>
+                <button onclick="navigateTo('shop')" class="mt-10 bg-white text-black font-black py-4 px-10 w-fit text-xs uppercase hover:bg-drip transition-all">Enter Shop</button>
+                <div class="absolute right-0 bottom-0 w-full md:w-1/2 h-full -z-0 opacity-40">
+                    <img src="https://images.unsplash.com/photo-1552374196-1ab2a1c593e8?auto=format&fit=crop&q=80" class="w-full h-full object-cover grayscale">
                 </div>
             </div>
         </section>
 
-        <section id="v-shop" class="page hidden container">
-            <div id="shop-grid" class="grid"></div>
-        </section>
-
-        <section id="v-product" class="page hidden overlay">
-            <div class="close-x" onclick="app.view('shop')">✕</div>
-            <div class="container"><div id="prod-content" class="prod-layout"></div></div>
-        </section>
-
-        <section id="v-cart" class="page hidden overlay">
-            <div class="close-x" onclick="app.view('shop')">✕</div>
-            <div class="container" style="max-width: 800px;">
-                <h2 style="font-family: var(--font-heading); margin-bottom: 3rem; font-size: 1rem;">YOUR BAG</h2>
-                <div id="cart-items"></div>
-                <div id="cart-footer"></div>
+        <section id="shop" class="page px-6 md:px-20 py-10">
+            <div class="flex justify-between items-end mb-12">
+                <h2 id="shop-title" class="font-drip text-4xl">The Collection</h2>
+                <span id="active-filter-tag" class="text-drip text-[10px] font-black uppercase tracking-widest"></span>
+            </div>
+            <div id="products-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+                </div>
+            <div id="no-products-msg" class="hidden text-center py-40">
+                <p class="font-drip text-2xl opacity-20">Products coming soon</p>
             </div>
         </section>
 
-        <section id="v-checkout" class="page hidden overlay">
-            <div class="close-x" onclick="app.view('cart')">✕</div>
-            <div class="container" style="max-width: 500px;">
-                <h2 style="font-family: var(--font-heading); margin-bottom: 2rem; font-size: 1rem;">SHIPPING</h2>
-                <div style="background: rgba(255,239,0,0.1); border: 1px solid var(--accent); color: var(--accent); padding: 1rem; font-size: 0.7rem; margin-bottom: 2rem; text-align: center;">ONLY PAYPAL AVAILABLE</div>
-                <form onsubmit="app.checkout(event)">
-                    <input type="text" id="s-name" placeholder="Full Name" required>
-                    <input type="text" id="s-addr" placeholder="Street Address" required>
-                    <div style="display:flex; gap:10px;">
-                        <input type="text" id="s-city" placeholder="City" required>
-                        <input type="text" id="s-zip" placeholder="Zip" required>
+        <section id="cart" class="page px-6 md:px-20 py-10">
+            <h2 class="font-drip text-4xl mb-12">Shopping Bag</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-16">
+                <div id="cart-items" class="lg:col-span-2 space-y-6">
                     </div>
-                    <input type="text" id="s-country" placeholder="Country" required>
-                    <button type="submit" class="btn" style="background:#0070ba; color:white;">PROCEED TO PAYPAL</button>
+                <div class="bg-zinc-900/50 p-8 h-fit border border-white/5">
+                    <h3 class="font-black uppercase text-xs tracking-widest mb-6">Order Summary</h3>
+                    <div class="space-y-4 text-sm">
+                        <div class="flex justify-between text-gray-400"><span>Subtotal</span><span id="cart-subtotal">$0.00</span></div>
+                        <div class="flex justify-between text-drip"><span>Discount</span><span id="cart-discount">-$0.00</span></div>
+                        <hr class="border-white/10">
+                        <div class="flex justify-between font-black text-xl"><span>Total</span><span id="cart-total">$0.00</span></div>
+                    </div>
+                    <button onclick="navigateTo('checkout')" class="w-full bg-drip text-black font-black py-4 mt-8 text-xs uppercase tracking-widest">Checkout</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="checkout" class="page px-6 md:px-20 py-10">
+            <div class="max-w-2xl mx-auto">
+                <h2 class="font-drip text-4xl mb-12 text-center">Checkout</h2>
+                <form id="checkout-form" onsubmit="handleOrder(event)" class="space-y-4">
+                    <input type="text" placeholder="Full Name" required class="w-full p-4 outline-none">
+                    <input type="text" placeholder="Address" required class="w-full p-4 outline-none">
+                    <div class="grid grid-cols-2 gap-4">
+                        <input type="text" placeholder="City" required class="p-4 outline-none">
+                        <input type="text" placeholder="ZIP Code" required class="p-4 outline-none">
+                    </div>
+                    <input type="text" placeholder="Country" required class="w-full p-4 outline-none">
+                    
+                    <div class="pt-10">
+                        <div class="flex justify-between font-black text-2xl mb-6">
+                            <span>TOTAL DUE</span>
+                            <span id="checkout-final-total" class="text-drip">$0.00</span>
+                        </div>
+                        <button type="submit" class="w-full bg-drip text-black font-black py-6 text-sm uppercase tracking-[0.2em]">Pay & Order</button>
+                    </div>
                 </form>
             </div>
         </section>
 
-        <section id="v-admin-login" class="page hidden overlay">
-            <div class="close-x" onclick="app.view('home')">✕</div>
-            <div class="container" style="max-width:400px; padding-top:10vh;">
-                <h2 style="margin-bottom:2rem; font-family: var(--font-heading); font-size: 1rem;">STAFF AUTH</h2>
-                <input type="text" id="adm-u" placeholder="User">
-                <input type="password" id="adm-p" placeholder="Pass">
-                <button class="btn" onclick="admin.login()">LOGIN</button>
+        <section id="admin-login" class="page flex items-center justify-center py-20">
+            <div class="bg-zinc-900 p-10 w-full max-w-sm border border-white/10">
+                <h2 class="font-drip text-xl mb-8 text-center">Staff Access</h2>
+                <input type="text" id="admin-user" placeholder="Username" class="w-full p-4 mb-4 outline-none">
+                <input type="password" id="admin-pass" placeholder="Password" class="w-full p-4 mb-8 outline-none">
+                <button onclick="loginAdmin()" class="w-full bg-white text-black font-black py-4 uppercase text-xs">Authorize</button>
             </div>
         </section>
 
-        <section id="v-admin-dash" class="page hidden overlay admin-bg">
-            <div class="close-x" onclick="app.view('home')">✕</div>
-            <div class="container" style="padding-bottom: 100px;">
-                <h2 style="font-family: var(--font-heading); margin-bottom: 2rem; font-size: 1rem;">INVENTORY CONTROL</h2>
-                <button class="btn" style="width:auto; margin-bottom: 2rem; padding: 1rem 2rem;" onclick="admin.addP()">+ ADD PRODUCT</button>
-                <div id="admin-list"></div>
+        <section id="admin-dashboard" class="page px-6 md:px-20 py-10">
+            <div class="flex justify-between items-center mb-12">
+                <h2 class="font-drip text-3xl">Inventory</h2>
+                <button onclick="showAddProductModal()" class="bg-drip text-black px-6 py-2 font-black text-xs uppercase">Add Product</button>
+            </div>
+            
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead class="text-[10px] uppercase text-gray-500 tracking-widest border-b border-white/10">
+                        <tr>
+                            <th class="pb-4">Product</th>
+                            <th class="pb-4">Category</th>
+                            <th class="pb-4">Price</th>
+                            <th class="pb-4">Disc%</th>
+                            <th class="pb-4">Status</th>
+                            <th class="pb-4">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="admin-product-list" class="divide-y divide-white/5">
+                        </tbody>
+                </table>
             </div>
         </section>
     </main>
 
+    <div id="product-modal" class="fixed inset-0 bg-black/90 z-[100] hidden items-center justify-center p-6">
+        <div class="bg-zinc-900 p-8 w-full max-w-lg border border-white/10">
+            <h3 id="modal-title" class="font-drip text-xl mb-6">New Product</h3>
+            <div class="space-y-4">
+                <input type="text" id="p-name" placeholder="Product Name" class="w-full p-3 outline-none">
+                <select id="p-cat" class="w-full p-3 outline-none">
+                    <option value="Jackets">Jackets</option>
+                    <option value="Jeans">Jeans</option>
+                    <option value="Accessories">Accessories</option>
+                </select>
+                <div class="grid grid-cols-2 gap-4">
+                    <input type="number" id="p-price" placeholder="Price (USD)" class="p-3 outline-none">
+                    <input type="number" id="p-disc" placeholder="Discount %" class="p-3 outline-none">
+                </div>
+                <input type="text" id="p-img" placeholder="Image URLs (Comma separated)" class="w-full p-3 outline-none">
+                <div class="flex space-x-4 pt-4">
+                    <button onclick="saveProduct()" class="flex-1 bg-drip text-black font-black py-3 uppercase text-xs">Save</button>
+                    <button onclick="closeProductModal()" class="flex-1 bg-white/10 text-white font-black py-3 uppercase text-xs">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="gallery-overlay" onclick="closeGallery()">
+        <button class="absolute top-10 right-10 text-4xl">×</button>
+        <div class="flex items-center space-x-6 px-4" onclick="event.stopPropagation()">
+            <button onclick="shiftGallery(-1)" class="text-4xl text-drip hover:scale-125 transition">←</button>
+            <img id="gallery-img" src="" class="max-h-[80vh] max-w-full object-contain shadow-2xl">
+            <button onclick="shiftGallery(1)" class="text-4xl text-drip hover:scale-125 transition">→</button>
+        </div>
+    </div>
+
     <script>
-        // FIXED DATA STRUCTURE
-        const initialData = [
-            { id: "1", name: "ARCHIVE BAGGY JEANS", price: "125.00", sizes: ["30", "32", "34", "36"], active: true, 
-              variants: [
-                  { color: "Blue", img: "https://images.unsplash.com/photo-1542272202-3c2425586676?q=80" },
-                  { color: "Black", img: "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?q=80" }
-              ] 
+        // --- DATA & STATE ---
+        let products = JSON.parse(localStorage.getItem('driply_products')) || [];
+        let cart = JSON.parse(localStorage.getItem('driply_cart')) || [];
+        let isAdmin = false;
+        let editingId = null;
+        let currentFilter = 'all';
+        let galleryContext = { images: [], index: 0 };
+
+        // --- NAVIGATION LOGIC ---
+        function navigateTo(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            const target = document.getElementById(pageId);
+            target.classList.add('active');
+            
+            if(pageId === 'shop') renderShop();
+            if(pageId === 'cart') renderCart();
+            if(pageId === 'checkout') renderCheckout();
+            if(pageId === 'admin-dashboard') renderAdmin();
+            
+            window.scrollTo(0,0);
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('translate-x-full');
+        }
+
+        // --- AUTH ---
+        function loginAdmin() {
+            const user = document.getElementById('admin-user').value;
+            const pass = document.getElementById('admin-pass').value;
+            if(user === 'Tourya' && pass === 'Philipo21') {
+                isAdmin = true;
+                navigateTo('admin-dashboard');
+                document.getElementById('admin-nav-btn').innerText = 'Dashboard';
+            } else {
+                alert("Access Denied");
             }
-        ];
+        }
 
-        let products = JSON.parse(localStorage.getItem('drply_vFinal_p')) || initialData;
-        let cart = JSON.parse(localStorage.getItem('drply_vFinal_c')) || [];
-        let curP = null, curV = null, curS = null;
+        // --- PRODUCT MANAGEMENT ---
+        function saveProduct() {
+            const product = {
+                id: editingId || Date.now(),
+                name: document.getElementById('p-name').value,
+                category: document.getElementById('p-cat').value,
+                price: parseFloat(document.getElementById('p-price').value),
+                discount: parseFloat(document.getElementById('p-disc').value) || 0,
+                images: document.getElementById('p-img').value, // Commma separated
+                active: true
+            };
 
-        const app = {
-            view(id) {
-                document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'));
-                const target = document.getElementById('v-' + id);
-                if (target) target.classList.remove('hidden');
+            if(!product.name || !product.price || !product.images) return alert("Fill required fields");
+
+            if(editingId) {
+                products = products.map(p => p.id === editingId ? product : p);
+            } else {
+                products.push(product);
+            }
+
+            localStorage.setItem('driply_products', JSON.stringify(products));
+            editingId = null;
+            closeProductModal();
+            renderAdmin();
+        }
+
+        function deleteProduct(id) {
+            if(confirm("Delete product?")) {
+                products = products.filter(p => p.id !== id);
+                localStorage.setItem('driply_products', JSON.stringify(products));
+                renderAdmin();
+            }
+        }
+
+        function toggleStatus(id) {
+            products = products.map(p => {
+                if(p.id === id) p.active = !p.active;
+                return p;
+            });
+            localStorage.setItem('driply_products', JSON.stringify(products));
+            renderAdmin();
+        }
+
+        // --- SHOP LOGIC ---
+        function filterByCategory(cat) {
+            currentFilter = cat;
+            document.getElementById('active-filter-tag').innerText = cat;
+            navigateTo('shop');
+        }
+
+        function renderShop() {
+            const grid = document.getElementById('products-grid');
+            const empty = document.getElementById('no-products-msg');
+            grid.innerHTML = '';
+            
+            const activeItems = products.filter(p => {
+                const isCat = currentFilter === 'all' || p.category === currentFilter;
+                return p.active && isCat;
+            });
+
+            if(activeItems.length === 0) {
+                empty.classList.remove('hidden');
+                return;
+            } else {
+                empty.classList.add('hidden');
+            }
+
+            activeItems.forEach(p => {
+                const imgArr = p.images.split(',');
+                const discountPrice = p.price - (p.price * (p.discount / 100));
                 
-                if(id === 'shop') this.renderShop();
-                if(id === 'cart') this.renderCart();
-                if(id === 'admin-dash') admin.renderList();
-                window.scrollTo(0,0);
-            },
-            renderShop() {
-                const grid = document.getElementById('shop-grid');
-                grid.innerHTML = products.filter(p => p.active).map(p => `
-                    <div class="card" onclick="app.showProduct('${p.id}')">
-                        <img src="${p.variants[0].img}">
-                        <div class="card-meta"><span>${p.name}</span><span>$${p.price}</span></div>
-                    </div>
-                `).join('');
-            },
-            showProduct(id) {
-                curP = products.find(p => p.id === id);
-                curV = curP.variants[0]; curS = null;
-                this.view('product'); this.renderDetail();
-            },
-            renderDetail() {
-                document.getElementById('prod-content').innerHTML = `
-                    <img src="${curV.img}" class="prod-img">
-                    <div>
-                        <h1 style="font-family:var(--font-heading); font-size: 1.5rem; margin-bottom: 1rem;">${curP.name}</h1>
-                        <p style="font-size:1.5rem; margin-bottom:2rem;">$${curP.price}</p>
-                        <label>COLOR: ${curV.color}</label>
-                        <div class="swatch-group">${curP.variants.map(v => `<div class="swatch ${curV.color===v.color?'active':''}" style="background:${v.color}" onclick="app.setV('${v.color}')"></div>`).join('')}</div>
-                        <label>SIZE: ${curS || 'SELECT'}</label>
-                        <div class="size-grid">${curP.sizes.map(s => `<div class="size-btn ${curS===s?'active':''}" onclick="app.setS('${s}')">${s}</div>`).join('')}</div>
-                        <button class="btn" onclick="app.add()" ${!curS?'disabled':''}>ADD TO BAG</button>
-                    </div>
-                `;
-            },
-            setV(c) { curV = curP.variants.find(v => v.color === c); this.renderDetail(); },
-            setS(s) { curS = s; this.renderDetail(); },
-            add() {
-                cart.push({ uid: Date.now(), name: curP.name, price: curP.price, color: curV.color, size: curS, img: curV.img });
-                this.sync(); this.view('cart');
-            },
-            renderCart() {
-                const total = cart.reduce((a, b) => a + parseFloat(b.price), 0);
-                document.getElementById('cart-items').innerHTML = cart.map((item, i) => `
-                    <div style="display:flex; gap:20px; border-bottom:1px solid #222; padding:20px 0; align-items:center;">
-                        <img src="${item.img}" style="width:70px;">
-                        <div style="flex:1"><strong>${item.name}</strong><br><small>${item.color} / ${item.size}</small></div>
-                        <strong>$${item.price}</strong>
-                        <button onclick="app.rem(${i})" style="background:none; border:none; color:red; cursor:pointer; margin-left:15px;">✕</button>
-                    </div>
-                `).join('');
-                document.getElementById('cart-footer').innerHTML = cart.length ? `<div style="display:flex; justify-content:space-between; margin:2rem 0;"><h3>TOTAL</h3><h3>$${total.toFixed(2)}</h3></div><button class="btn" onclick="app.view('checkout')">CHECKOUT</button>` : "<p style='opacity:0.5'>BAG IS EMPTY</p>";
-            },
-            rem(i) { cart.splice(i, 1); this.sync(); this.renderCart(); },
-            checkout(e) {
-                e.preventDefault();
-                const total = cart.reduce((a, b) => a + parseFloat(b.price), 0);
-                const items = cart.map(i => `${i.name}(${i.color}/${i.size})`).join(', ');
-                const ship = `${document.getElementById('s-name').value}, ${document.getElementById('s-addr').value}, ${document.getElementById('s-city').value}, ${document.getElementById('s-zip').value}`;
-                const memo = `DRIPLY ORDER: ${items} | SHIP: ${ship}`;
-                window.location.href = `https://paypal.me/AdamDupont917/${total.toFixed(2)}?item_name=${encodeURIComponent(memo)}`;
-                cart = []; this.sync();
-            },
-            sync() {
-                localStorage.setItem('drply_vFinal_p', JSON.stringify(products));
-                localStorage.setItem('drply_vFinal_c', JSON.stringify(cart));
-                document.getElementById('cart-count').innerText = cart.length;
-            }
-        };
-
-        const admin = {
-            login() { 
-                if(document.getElementById('adm-u').value === 'Tourya' && document.getElementById('adm-p').value === 'Philipo21') {
-                    app.view('admin-dash'); 
-                } else { alert('DENIED'); }
-            },
-            renderList() {
-                document.getElementById('admin-list').innerHTML = products.map(p => `
-                    <div class="admin-item">
-                        <span><strong>${p.name}</strong> ($${p.price})</span>
-                        <div>
-                            <button onclick="admin.tog('${p.id}')" style="padding: 5px 15px; cursor:pointer;">${p.active?'LIVE':'HIDDEN'}</button>
-                            <button onclick="admin.del('${p.id}')" style="padding: 5px 15px; color: red; margin-left: 10px; cursor:pointer;">✕</button>
+                grid.innerHTML += `
+                    <div class="product-card group cursor-pointer">
+                        <div class="relative aspect-[3/4] overflow-hidden bg-zinc-900 border border-white/5" onclick="openGallery('${p.images}')">
+                            <img src="${imgArr[0]}" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700">
+                            ${p.discount > 0 ? `<span class="absolute top-4 left-4 bg-drip text-black text-[10px] font-black px-2 py-1 uppercase">-${p.discount}%</span>` : ''}
+                        </div>
+                        <div class="mt-6 flex justify-between items-start">
+                            <div>
+                                <h3 class="font-black text-xs uppercase tracking-widest">${p.name}</h3>
+                                <div class="flex items-center space-x-3 mt-1">
+                                    <span class="${p.discount > 0 ? 'line-through opacity-30' : 'text-gray-400'} font-bold text-sm">$${p.price.toFixed(2)}</span>
+                                    ${p.discount > 0 ? `<span class="text-drip font-black text-sm">$${discountPrice.toFixed(2)}</span>` : ''}
+                                </div>
+                            </div>
+                            <button onclick="addToCart(${p.id})" class="text-[10px] font-black uppercase border border-white/20 px-4 py-2 hover:bg-white hover:text-black transition">Add</button>
                         </div>
                     </div>
-                `).join('');
-            },
-            tog(id) { const p = products.find(x => x.id === id); p.active = !p.active; app.sync(); this.renderList(); },
-            del(id) { if(confirm('Delete?')) { products = products.filter(x => x.id !== id); app.sync(); this.renderList(); } },
-            addP() {
-                const name = prompt("Item Name"), price = prompt("Price (Ex: 80.00)"), color = prompt("Color Name"), img = prompt("Image URL");
-                if(name && price) { 
-                    products.push({id:Date.now().toString(), name, price, sizes:['S','M','L','XL'], active:false, variants:[{color, img}]}); 
-                    app.sync(); this.renderList(); 
-                }
-            }
-        };
+                `;
+            });
+        }
 
-        app.sync();
-    </script>
-</body>
-</html>
+        // --- CART LOGIC ---
+        function addToCart(id) {
+            const p = products.find(x => x.id === id);
+            const exists = cart.find(x => x.id === id);
+            if(exists) {
+                exists.qty++;
+            } else {
+                cart.push({ ...p, qty: 1 });
+            }
+            updateCart();
+            alert(`${p.name} added to bag.`);
+        }
+
+        function updateCart() {
+            localStorage.setItem('driply_cart', JSON.stringify(cart));
+            document.getElementById('cart-count').innerText = cart.reduce((a,b) => a + b.qty, 0);
+        }
+
+        function renderCart() {
+            const container = document.getElementById('cart-items');
+            container.innerHTML = '';
+            
+            let subtotal = 0;
+            let totalDiscount = 0;
+
+            if(cart.length === 0) {
+                container.innerHTML = `<p class="py-20 opacity-30 uppercase text-xs tracking-widest font-black">Your bag is empty</p>`;
+            }
+
+            cart.forEach((item, index) => {
+                const price = item.price * item.qty;
+                const savings = (item.price * (item.discount / 100)) * item.qty;
+                subtotal += price;
+                totalDiscount += savings;
+
+                container.innerHTML += `
+                    <div class="flex items-center justify-between border-b border-white/
