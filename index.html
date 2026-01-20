@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DRIPLY | CORE ARCHIVE</title>
+    <title>DRIPLY | CORE ARCHIVE 2026</title>
     <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -17,64 +17,59 @@
         .container { max-width: 1400px; margin: 0 auto; padding: 0 2rem; }
         .hidden { display: none !important; }
 
+        /* NAVIGATION */
+        nav { height: 80px; display: flex; align-items: center; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: rgba(5,5,5,0.8); backdrop-filter: blur(20px); z-index: 1000; }
+        .nav-inner { width: 100%; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: var(--font-heading); font-size: 1.1rem; cursor: pointer; letter-spacing: 4px; }
+        .nav-links a { text-decoration: none; color: white; font-size: 0.75rem; margin-left: 2rem; cursor: pointer; font-weight: 700; transition: 0.3s; }
+        .nav-links a:hover { color: var(--accent); }
+
         /* HERO LANDING */
         .hero { 
             height: 100vh; 
-            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
-                        url('https://images.unsplash.com/photo-1542272202-3c2425586676?q=80&w=2000&auto=format&fit=crop'); 
-            background-size: cover; 
-            background-position: center;
-            display: flex; 
-            align-items: center; 
-            justify-content: center;
-            text-align: center;
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.8)), 
+                        url('https://images.unsplash.com/photo-1551028719-00167b16eac5?q=80&w=2000&auto=format&fit=crop'); 
+            background-size: cover; background-position: center;
+            display: flex; align-items: center; justify-content: center; text-align: center;
         }
-        .hero h1 { font-family: var(--font-heading); font-size: 10vw; line-height: 0.8; letter-spacing: -2px; }
-        .hero p { margin: 20px 0; font-size: 1rem; opacity: 0.8; letter-spacing: 5px; text-transform: uppercase; }
+        .hero h1 { font-family: var(--font-heading); font-size: clamp(3rem, 10vw, 8rem); line-height: 0.8; }
 
-        /* TICKER */
-        .ticker { background: var(--accent); color: #000; padding: 12px 0; overflow: hidden; white-space: nowrap; font-family: var(--font-heading); font-size: 0.7rem; font-weight: 900; }
-        .ticker-inner { display: inline-block; animation: ticker 30s linear infinite; }
-        @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        /* ADMIN DASHBOARD BACKGROUND */
+        .admin-bg {
+            background: linear-gradient(rgba(0,0,0,0.9), rgba(0,0,0,0.9)), 
+                        url('https://images.unsplash.com/photo-1510511459019-5dee997ddfdf?q=80&w=2000&auto=format&fit=crop');
+            background-size: cover; background-attachment: fixed;
+        }
 
-        /* NAV */
-        nav { height: 80px; display: flex; align-items: center; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: rgba(5,5,5,0.8); backdrop-filter: blur(20px); z-index: 1000; }
-        .nav-inner { width: 100%; display: flex; justify-content: space-between; align-items: center; }
-        .logo { font-family: var(--font-heading); font-size: 1rem; cursor: pointer; letter-spacing: 3px; }
-        .nav-links a { text-decoration: none; color: white; font-size: 0.7rem; margin-left: 2rem; cursor: pointer; font-weight: 700; letter-spacing: 1px; }
-
-        /* GRID */
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 2rem; padding: 4rem 0; }
-        .card { background: var(--surface); border: 1px solid var(--border); transition: 0.4s; cursor: pointer; }
-        .card:hover { border-color: var(--accent); transform: translateY(-5px); }
+        /* PRODUCT GRID */
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 2.5rem; padding: 4rem 0; }
+        .card { background: var(--surface); border: 1px solid var(--border); cursor: pointer; transition: 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+        .card:hover { transform: translateY(-10px); border-color: var(--accent); }
         .card img { width: 100%; aspect-ratio: 4/5; object-fit: cover; }
-        .card-meta { padding: 1.5rem; display: flex; justify-content: space-between; align-items: center; }
+        .card-meta { padding: 1.5rem; display: flex; justify-content: space-between; align-items: center; font-family: var(--font-heading); font-size: 0.7rem; }
 
         /* OVERLAYS */
         .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); z-index: 2000; padding-top: 100px; overflow-y: auto; }
-        .close-x { position: fixed; top: 30px; right: 30px; font-size: 2.5rem; color: white; cursor: pointer; z-index: 2100; transition: 0.3s; }
+        .close-x { position: fixed; top: 30px; right: 30px; font-size: 2rem; color: white; cursor: pointer; z-index: 2100; transition: 0.3s; }
         .close-x:hover { color: var(--accent); transform: rotate(90deg); }
 
-        /* PRODUCT VIEW */
+        /* PRODUCT DETAIL */
         .prod-layout { display: grid; grid-template-columns: 1.2fr 1fr; gap: 4rem; padding-bottom: 5rem; }
         .prod-img { width: 100%; border: 1px solid var(--border); }
-        .swatch-box { display: flex; gap: 15px; margin: 15px 0 30px; }
-        .swatch { width: 40px; height: 40px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; padding: 2px; background-clip: content-box; }
-        .swatch.active { border-color: white; box-shadow: 0 0 10px var(--accent); }
+        .swatch-group { display: flex; gap: 15px; margin: 20px 0; }
+        .swatch { width: 35px; height: 35px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; transition: 0.3s; }
+        .swatch.active { border-color: white; box-shadow: 0 0 15px var(--accent); }
         .size-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 30px; }
         .size-btn { padding: 15px; border: 1px solid var(--border); text-align: center; cursor: pointer; font-weight: 700; transition: 0.2s; }
         .size-btn.active { background: white; color: black; border-color: white; }
 
-        /* BUTTONS */
+        /* BUTTONS & INPUTS */
         .btn { background: white; color: black; border: none; padding: 1.5rem; width: 100%; font-family: var(--font-heading); font-size: 0.8rem; font-weight: 900; cursor: pointer; transition: 0.3s; letter-spacing: 2px; }
         .btn:hover { background: var(--accent); }
         .btn:disabled { background: #222; color: #555; cursor: not-allowed; }
+        input { background: rgba(255,255,255,0.05); border: 1px solid var(--border); color: white; padding: 18px; width: 100%; margin-bottom: 1.2rem; font-family: inherit; }
 
-        /* FORMS */
-        input { background: #111; border: 1px solid var(--border); color: white; padding: 18px; width: 100%; margin-bottom: 1.2rem; font-family: inherit; }
-        label { font-size: 0.6rem; color: #888; text-transform: uppercase; margin-bottom: 8px; display: block; letter-spacing: 1px; }
-
-        @media (max-width: 800px) { .prod-layout { grid-template-columns: 1fr; } }
+        .admin-item { background: rgba(255,255,255,0.03); border: 1px solid var(--border); padding: 1.5rem; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; backdrop-filter: blur(10px); }
     </style>
 </head>
 <body>
@@ -94,16 +89,15 @@
         <section id="v-home" class="page">
             <div class="hero">
                 <div class="hero-content">
-                    <p>Archive Series 2026</p>
-                    <h1>FUTURE<br>UTILITY</h1>
-                    <button class="btn" style="width:auto; padding: 1.5rem 5rem; margin-top: 40px;" onclick="app.view('shop')">ENTER SHOP</button>
+                    <p style="letter-spacing: 5px; margin-bottom: 10px;">ESTABLISHED 2026</p>
+                    <h1>CORE<br>ARCHIVE</h1>
+                    <button class="btn" style="width:auto; padding: 1.5rem 5rem; margin-top: 40px;" onclick="app.view('shop')">SHOP DROP</button>
                 </div>
             </div>
         </section>
 
-        <section id="v-shop" class="page hidden">
-            <div class="ticker"><div class="ticker-inner">WORLDWIDE SHIPPING AVAILABLE • PAYPAL ENCRYPTED • LIMITED QUANTITIES • NEW DROPS EVERY FRIDAY • WORLDWIDE SHIPPING AVAILABLE • </div></div>
-            <div class="container"><div id="shop-grid" class="grid"></div></div>
+        <section id="v-shop" class="page hidden container">
+            <div id="shop-grid" class="grid"></div>
         </section>
 
         <section id="v-product" class="page hidden overlay">
@@ -114,7 +108,7 @@
         <section id="v-cart" class="page hidden overlay">
             <div class="close-x" onclick="app.view('shop')">✕</div>
             <div class="container" style="max-width: 800px;">
-                <h2 style="font-family: var(--font-heading); margin-bottom: 3rem;">YOUR SELECTION</h2>
+                <h2 style="font-family: var(--font-heading); margin-bottom: 3rem; font-size: 1rem;">YOUR BAG</h2>
                 <div id="cart-items"></div>
                 <div id="cart-footer"></div>
             </div>
@@ -123,62 +117,65 @@
         <section id="v-checkout" class="page hidden overlay">
             <div class="close-x" onclick="app.view('cart')">✕</div>
             <div class="container" style="max-width: 500px;">
-                <h2 style="font-family: var(--font-heading); margin-bottom: 2rem;">SHIPPING</h2>
-                <div style="background: rgba(255,239,0,0.1); border:1px solid var(--accent); color:var(--accent); padding:1rem; font-size:0.7rem; margin-bottom:2rem; text-align:center;">
-                    ONLY PAYPAL PAYMENT AVAILABLE AT THIS MOMENT
-                </div>
+                <h2 style="font-family: var(--font-heading); margin-bottom: 2rem; font-size: 1rem;">SHIPPING</h2>
+                <div style="background: rgba(255,239,0,0.1); border: 1px solid var(--accent); color: var(--accent); padding: 1rem; font-size: 0.7rem; margin-bottom: 2rem; text-align: center;">ONLY PAYPAL AVAILABLE</div>
                 <form onsubmit="app.checkout(event)">
-                    <label>Full Name</label><input type="text" id="s-name" required>
-                    <label>Address</label><input type="text" id="s-addr" required>
+                    <input type="text" id="s-name" placeholder="Full Name" required>
+                    <input type="text" id="s-addr" placeholder="Street Address" required>
                     <div style="display:flex; gap:10px;">
-                        <div style="flex:2"><label>City</label><input type="text" id="s-city" required></div>
-                        <div style="flex:1"><label>Zip</label><input type="text" id="s-zip" required></div>
+                        <input type="text" id="s-city" placeholder="City" required>
+                        <input type="text" id="s-zip" placeholder="Zip" required>
                     </div>
-                    <label>Country</label><input type="text" id="s-country" required>
-                    <button type="submit" class="btn" style="background:#0070ba; color:white;">PAY VIA PAYPAL</button>
+                    <input type="text" id="s-country" placeholder="Country" required>
+                    <button type="submit" class="btn" style="background:#0070ba; color:white;">PROCEED TO PAYPAL</button>
                 </form>
             </div>
         </section>
 
         <section id="v-admin-login" class="page hidden overlay">
+            <div class="close-x" onclick="app.view('home')">✕</div>
             <div class="container" style="max-width:400px; padding-top:10vh;">
-                <h2 style="margin-bottom:2rem; font-family: var(--font-heading);">ADMIN</h2>
+                <h2 style="margin-bottom:2rem; font-family: var(--font-heading); font-size: 1rem;">STAFF AUTH</h2>
                 <input type="text" id="adm-u" placeholder="User">
                 <input type="password" id="adm-p" placeholder="Pass">
                 <button class="btn" onclick="admin.login()">LOGIN</button>
             </div>
         </section>
-        <section id="v-admin-dash" class="page hidden overlay"><div class="container"><div id="admin-list"></div></div></section>
+
+        <section id="v-admin-dash" class="page hidden overlay admin-bg">
+            <div class="close-x" onclick="app.view('home')">✕</div>
+            <div class="container" style="padding-bottom: 100px;">
+                <h2 style="font-family: var(--font-heading); margin-bottom: 2rem; font-size: 1rem;">INVENTORY CONTROL</h2>
+                <button class="btn" style="width:auto; margin-bottom: 2rem; padding: 1rem 2rem;" onclick="admin.addP()">+ ADD PRODUCT</button>
+                <div id="admin-list"></div>
+            </div>
+        </section>
     </main>
 
     <script>
-        // PRE-LOADED FUNCTIONAL DATA
+        // FIXED DATA STRUCTURE
         const initialData = [
-            {
-                id: "1", name: "BAGGY DENIM V1", price: "145.00", sizes: ["30", "32", "34", "36"], active: true,
-                variants: [
-                    { color: "Indigo", img: "https://images.unsplash.com/photo-1542272202-3c2425586676?q=80&w=1000" },
-                    { color: "Black", img: "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?q=80&w=1000" }
-                ]
-            },
-            {
-                id: "2", name: "OVERSIZED HOODIE", price: "95.00", sizes: ["S", "M", "L", "XL"], active: true,
-                variants: [
-                    { color: "Bone", img: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?q=80&w=1000" }
-                ]
+            { id: "1", name: "ARCHIVE BAGGY JEANS", price: "125.00", sizes: ["30", "32", "34", "36"], active: true, 
+              variants: [
+                  { color: "Blue", img: "https://images.unsplash.com/photo-1542272202-3c2425586676?q=80" },
+                  { color: "Black", img: "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?q=80" }
+              ] 
             }
         ];
 
-        let products = JSON.parse(localStorage.getItem('drply_p')) || initialData;
-        let cart = JSON.parse(localStorage.getItem('drply_c')) || [];
+        let products = JSON.parse(localStorage.getItem('drply_vFinal_p')) || initialData;
+        let cart = JSON.parse(localStorage.getItem('drply_vFinal_c')) || [];
         let curP = null, curV = null, curS = null;
 
         const app = {
             view(id) {
                 document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'));
-                document.getElementById('v-' + id).classList.remove('hidden');
+                const target = document.getElementById('v-' + id);
+                if (target) target.classList.remove('hidden');
+                
                 if(id === 'shop') this.renderShop();
                 if(id === 'cart') this.renderCart();
+                if(id === 'admin-dash') admin.renderList();
                 window.scrollTo(0,0);
             },
             renderShop() {
@@ -186,7 +183,7 @@
                 grid.innerHTML = products.filter(p => p.active).map(p => `
                     <div class="card" onclick="app.showProduct('${p.id}')">
                         <img src="${p.variants[0].img}">
-                        <div class="card-meta"><strong>${p.name}</strong><span>$${p.price}</span></div>
+                        <div class="card-meta"><span>${p.name}</span><span>$${p.price}</span></div>
                     </div>
                 `).join('');
             },
@@ -199,11 +196,11 @@
                 document.getElementById('prod-content').innerHTML = `
                     <img src="${curV.img}" class="prod-img">
                     <div>
-                        <h1 style="font-family:var(--font-heading); margin-bottom:1rem;">${curP.name}</h1>
+                        <h1 style="font-family:var(--font-heading); font-size: 1.5rem; margin-bottom: 1rem;">${curP.name}</h1>
                         <p style="font-size:1.5rem; margin-bottom:2rem;">$${curP.price}</p>
-                        <label>Color: ${curV.color}</label>
-                        <div class="swatch-box">${curP.variants.map(v => `<div class="swatch ${curV.color===v.color?'active':''}" style="background:${v.color}" onclick="app.setV('${v.color}')"></div>`).join('')}</div>
-                        <label>Size: ${curS || 'Select'}</label>
+                        <label>COLOR: ${curV.color}</label>
+                        <div class="swatch-group">${curP.variants.map(v => `<div class="swatch ${curV.color===v.color?'active':''}" style="background:${v.color}" onclick="app.setV('${v.color}')"></div>`).join('')}</div>
+                        <label>SIZE: ${curS || 'SELECT'}</label>
                         <div class="size-grid">${curP.sizes.map(s => `<div class="size-btn ${curS===s?'active':''}" onclick="app.setS('${s}')">${s}</div>`).join('')}</div>
                         <button class="btn" onclick="app.add()" ${!curS?'disabled':''}>ADD TO BAG</button>
                     </div>
@@ -219,39 +216,56 @@
                 const total = cart.reduce((a, b) => a + parseFloat(b.price), 0);
                 document.getElementById('cart-items').innerHTML = cart.map((item, i) => `
                     <div style="display:flex; gap:20px; border-bottom:1px solid #222; padding:20px 0; align-items:center;">
-                        <img src="${item.img}" style="width:80px;">
+                        <img src="${item.img}" style="width:70px;">
                         <div style="flex:1"><strong>${item.name}</strong><br><small>${item.color} / ${item.size}</small></div>
                         <strong>$${item.price}</strong>
-                        <button onclick="app.rem(${i})" style="background:none; border:none; color:red; cursor:pointer; margin-left:20px;">REMOVE</button>
+                        <button onclick="app.rem(${i})" style="background:none; border:none; color:red; cursor:pointer; margin-left:15px;">✕</button>
                     </div>
                 `).join('');
-                document.getElementById('cart-footer').innerHTML = cart.length ? `<div style="display:flex; justify-content:space-between; margin:2rem 0;"><h3>TOTAL</h3><h3>$${total.toFixed(2)}</h3></div><button class="btn" onclick="app.view('checkout')">CHECKOUT</button>` : "";
+                document.getElementById('cart-footer').innerHTML = cart.length ? `<div style="display:flex; justify-content:space-between; margin:2rem 0;"><h3>TOTAL</h3><h3>$${total.toFixed(2)}</h3></div><button class="btn" onclick="app.view('checkout')">CHECKOUT</button>` : "<p style='opacity:0.5'>BAG IS EMPTY</p>";
             },
             rem(i) { cart.splice(i, 1); this.sync(); this.renderCart(); },
             checkout(e) {
                 e.preventDefault();
                 const total = cart.reduce((a, b) => a + parseFloat(b.price), 0);
-                const memo = `ORDER: ${cart.map(i => i.name+'('+i.color+'/'+i.size+')').join(', ')} | SHIP: ${document.getElementById('s-name').value}, ${document.getElementById('s-addr').value}, ${document.getElementById('s-city').value}`;
-                cart = []; this.sync();
+                const items = cart.map(i => `${i.name}(${i.color}/${i.size})`).join(', ');
+                const ship = `${document.getElementById('s-name').value}, ${document.getElementById('s-addr').value}, ${document.getElementById('s-city').value}, ${document.getElementById('s-zip').value}`;
+                const memo = `DRIPLY ORDER: ${items} | SHIP: ${ship}`;
                 window.location.href = `https://paypal.me/AdamDupont917/${total.toFixed(2)}?item_name=${encodeURIComponent(memo)}`;
+                cart = []; this.sync();
             },
             sync() {
-                localStorage.setItem('drply_p', JSON.stringify(products));
-                localStorage.setItem('drply_c', JSON.stringify(cart));
+                localStorage.setItem('drply_vFinal_p', JSON.stringify(products));
+                localStorage.setItem('drply_vFinal_c', JSON.stringify(cart));
                 document.getElementById('cart-count').innerText = cart.length;
             }
         };
 
         const admin = {
-            login() { if(document.getElementById('adm-u').value === 'Tourya' && document.getElementById('adm-p').value === 'Philipo21') app.view('admin-dash'); },
+            login() { 
+                if(document.getElementById('adm-u').value === 'Tourya' && document.getElementById('adm-p').value === 'Philipo21') {
+                    app.view('admin-dash'); 
+                } else { alert('DENIED'); }
+            },
             renderList() {
-                document.getElementById('admin-list').innerHTML = `<button class="btn" onclick="admin.addP()">+ ADD NEW</button><br><br>` + 
-                products.map(p => `<div style="padding:1rem; border:1px solid #222; margin-bottom:10px; display:flex; justify-content:space-between;">${p.name} <button onclick="admin.tog('${p.id}')">${p.active?'LIVE':'HIDDEN'}</button></div>`).join('');
+                document.getElementById('admin-list').innerHTML = products.map(p => `
+                    <div class="admin-item">
+                        <span><strong>${p.name}</strong> ($${p.price})</span>
+                        <div>
+                            <button onclick="admin.tog('${p.id}')" style="padding: 5px 15px; cursor:pointer;">${p.active?'LIVE':'HIDDEN'}</button>
+                            <button onclick="admin.del('${p.id}')" style="padding: 5px 15px; color: red; margin-left: 10px; cursor:pointer;">✕</button>
+                        </div>
+                    </div>
+                `).join('');
             },
             tog(id) { const p = products.find(x => x.id === id); p.active = !p.active; app.sync(); this.renderList(); },
+            del(id) { if(confirm('Delete?')) { products = products.filter(x => x.id !== id); app.sync(); this.renderList(); } },
             addP() {
-                const name = prompt("Name"), price = prompt("Price"), color = prompt("Color"), img = prompt("Img URL");
-                if(name && price) { products.push({id:Date.now().toString(), name, price, sizes:['S','M','L'], active:false, variants:[{color, img}]}); app.sync(); this.renderList(); }
+                const name = prompt("Item Name"), price = prompt("Price (Ex: 80.00)"), color = prompt("Color Name"), img = prompt("Image URL");
+                if(name && price) { 
+                    products.push({id:Date.now().toString(), name, price, sizes:['S','M','L','XL'], active:false, variants:[{color, img}]}); 
+                    app.sync(); this.renderList(); 
+                }
             }
         };
 
