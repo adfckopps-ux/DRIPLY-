@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DRIPLY | CORE SERIES 2026</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Space+Grotesk:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #050505; --surface: #0f0f0f; --primary: #ffffff;
+            --accent: #ffef00; --border: rgba(255,255,255,0.1);
+            --font-main: 'Space Grotesk', sans-serif; --font-heading: 'Syncopate', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+        body { background: var(--bg); color: var(--primary); font-family: var(--font-main); overflow-x: hidden; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 0 2rem; }
+        .hidden { display: none !important; }
+
+        /* NAVIGATION */
+        nav { height: 80px; display: flex; align-items: center; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: rgba(5,5,5,0.8); backdrop-filter: blur(15px); z-index: 1000; }
+        .nav-inner { width: 100%; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: var(--font-heading); font-size: 1.2rem; cursor: pointer; letter-spacing: 4px; text-shadow: 0 0 10px rgba(255,255,255,0.2); }
+        .nav-links a { text-decoration: none; color: var(--primary); font-size: 0.75rem; margin-left: 2rem; cursor: pointer; font-weight: 700; letter-spacing: 2px; transition: 0.3s; opacity: 0.7; }
+        .nav-links a:hover { opacity: 1; color: var(--accent); }
+
+        /* HERO SECTION */
+        .hero { height: 90vh; display: flex; align-items: center; position: relative; overflow: hidden; }
+        .hero-content { z-index: 10; position: relative; max-width: 800px; }
+        .hero h1 { font-family: var(--font-heading); font-size: clamp(3rem, 12vw, 9rem); line-height: 0.85; margin-bottom: 2rem; }
+        .hero-bg-text { position: absolute; right: -5%; top: 50%; transform: translateY(-50%); font-family: var(--font-heading); font-size: 25vw; opacity: 0.03; pointer-events: none; white-space: nowrap; }
+        
+        /* TICKER */
+        .ticker { background: var(--accent); color: #000; padding: 10px 0; overflow: hidden; white-space: nowrap; font-family: var(--font-heading); font-size: 0.7rem; font-weight: 900; }
+        .ticker-inner { display: inline-block; animation: ticker 30s linear infinite; }
+        @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+        /* PRODUCT GRID */
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 2rem; padding: 4rem 0; }
+        .product-card { background: var(--surface); border: 1px solid var(--border); overflow: hidden; cursor: pointer; transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+        .product-card:hover { transform: translateY(-10px); border-color: rgba(255,255,255,0.3); }
+        .product-card img { width: 100%; aspect-ratio: 4/5; object-fit: cover; transition: transform 0.6s; }
+        .product-card:hover img { transform: scale(1.05); }
+        .card-info { padding: 1.5rem; display: flex; justify-content: space-between; align-items: center; }
+
+        /* OVERLAY SYSTEM */
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); z-index: 2000; padding-top: 80px; overflow-y: auto; }
+        .close-btn { position: fixed; top: 30px; right: 30px; font-size: 2rem; cursor: pointer; color: #fff; background: none; border: none; z-index: 2100; transition: 0.3s; }
+        .close-btn:hover { color: var(--accent); transform: rotate(90deg); }
+
+        /* PRODUCT DETAIL */
+        .product-wrap { display: grid; grid-template-columns: 1.2fr 1fr; gap: 5rem; padding-bottom: 5rem; }
+        .detail-img { width: 100%; position: sticky; top: 120px; }
+        .swatch { width: 40px; height: 40px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; padding: 3px; background-clip: content-box; transition: 0.3s; }
+        .swatch.active { border-color: var(--primary); box-shadow: 0 0 15px var(--accent); }
+        .size-box { padding: 15px 30px; border: 1px solid var(--border); cursor: pointer; transition: 0.3s; text-align: center; font-weight: 700; }
+        .size-box.active { background: var(--primary); color: #000; border-color: var(--primary); }
+
+        /* BUTTONS */
+        .btn { background: var(--primary); color: #000; border: none; padding: 1.5rem; width: 100%; font-family: var(--font-heading); font-size: 0.8rem; font-weight: 900; cursor: pointer; transition: 0.3s; letter-spacing: 2px; }
+        .btn:hover { background: var(--accent); }
+        .btn:disabled { background: #222; color: #555; cursor: not-allowed; }
+
+        /* INPUTS */
+        input { background: rgba(255,255,255,0.03); border: 1px solid var(--border); color: #fff; padding: 18px; width: 100%; margin-bottom: 1.2rem; font-family: inherit; font-size: 1rem; }
+        label { font-size: 0.6rem; letter-spacing: 2px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px; display: block; }
+
+        /* MOBILE FIX */
+        @media (max-width: 900px) { .product-wrap { grid-template-columns: 1fr; } .hero h1 { font-size: 18vw; } }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="container nav-inner">
+            <div class="logo" onclick="app.view('home')">DRIPLY</div>
+            <div class="nav-links">
+                <a onclick="app.view('shop')">SHOP</a>
+                <a onclick="app.view('cart')">BAG (<span id="cart-count">0</span>)</a>
+                <a onclick="app.view('admin-login')">ADMIN</a>
+            </div>
+        </div>
+    </nav>
+
+    <main id="app">
+        <section id="v-home" class="page">
+            <div class="ticker">
+                <div class="ticker-inner">
+                    CORE SERIES DROP 2026 • WORLDWIDE SHIPPING • PAYPAL SECURED • LIMITED QUANTITY • CORE SERIES DROP 2026 • WORLDWIDE SHIPPING • PAYPAL SECURED • LIMITED QUANTITY •
+                </div>
+            </div>
+            <div class="hero container">
+                <div class="hero-bg-text">ARCHIVE</div>
+                <div class="hero-content">
+                    <h1>FUTURE<br>UTILITY</h1>
+                    <p style="max-width: 400px; margin-bottom: 2rem; line-height: 1.6; opacity: 0.6;">High-performance garments designed for the modern landscape. Precision crafted, limited availability.</p>
+                    <button class="btn" style="width: auto; padding: 1.5rem 5rem;" onclick="app.view('shop')">SHOP THE DROP</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="v-shop" class="page hidden container">
+            <div id="shop-grid" class="grid"></div>
+        </section>
+
+        <section id="v-product" class="page hidden overlay">
+            <button class="close-btn" onclick="app.view('shop')">✕</button>
+            <div class="container"><div id="product-content" class="product-wrap"></div></div>
+        </section>
+
+        <section id="v-cart" class="page hidden overlay">
+            <button class="close-btn" onclick="app.view('shop')">✕</button>
+            <div class="container" style="max-width: 900px;">
+                <h2 style="font-family: var(--font-heading); font-size: 1.5rem; margin-bottom: 3rem;">SHOPPING BAG</h2>
+                <div id="cart-items"></div>
+                <div id="cart-footer"></div>
+            </div>
+        </section>
+
+        <section id="v-checkout" class="page hidden overlay">
+            <button class="close-btn" onclick="app.view('cart')">✕</button>
+            <div class="container" style="max-width: 550px;">
+                <h2 style="font-family: var(--font-heading); margin-bottom: 2rem;">SHIPPING INFO</h2>
+                <div style="background: rgba(255,239,0,0.1); border: 1px solid var(--accent); color: var(--accent); padding: 1.5rem; font-size: 0.7rem; margin-bottom: 2rem; font-weight: 700; letter-spacing: 1px;">
+                    NOTICE: ONLY PAYPAL PAYMENTS ARE ACCEPTED AT THIS TIME.
+                </div>
+                <form onsubmit="app.processPayment(event)">
+                    <label>Full Name</label><input type="text" id="ship-name" required>
+                    <label>Street Address</label><input type="text" id="ship-addr" required>
+                    <div style="display: flex; gap: 1rem;">
+                        <div style="flex:2"><label>City</label><input type="text" id="ship-city" required></div>
+                        <div style="flex:1"><label>Zip Code</label><input type="text" id="ship-zip" required></div>
+                    </div>
+                    <label>Country</label><input type="text" id="ship-country" required>
+                    <button type="submit" class="btn" style="background: #0070ba; color: #fff; margin-top: 1rem;">PAY VIA PAYPAL</button>
+                </form>
+            </div>
+        </section>
+
+        <section id="v-admin-login" class="page hidden overlay">
+            <div class="container" style="max-width: 400px; padding-top: 10vh;">
+                <h2 style="font-family: var(--font-heading); margin-bottom: 2rem;">RESTRICTED</h2>
+                <input type="text" id="adm-user" placeholder="Staff ID">
+                <input type="password" id="adm-pass" placeholder="Passphrase">
+                <button class="btn" onclick="admin.login()">AUTHORIZE</button>
+            </div>
+        </section>
+
+        <section id="v-admin-dash" class="page hidden overlay">
+            <div class="container">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 3rem;">
+                    <h2 style="font-family: var(--font-heading);">INVENTORY CONTROL</h2>
+                    <button class="btn" style="width: auto; padding: 15px 30px;" onclick="admin.openModal()">+ CREATE PRODUCT</button>
+                </div>
+                <div id="admin-list"></div>
+            </div>
+        </section>
+    </main>
+
+    <div id="admin-modal" class="overlay hidden" style="background: rgba(0,0,0,0.98); z-index: 3000;">
+        <div class="container" style="max-width: 700px; background: #0f0f0f; padding: 3rem; border: 1px solid var(--border); margin-top: 50px; position: relative;">
+            <button class="close-btn" onclick="admin.closeModal()">✕</button>
+            <h3 style="margin-bottom: 2rem;">PRODUCT SETTINGS</h3>
+            <input type="text" id="p-name" placeholder="Item Name">
+            <input type="number" id="p-price" placeholder="Price USD">
+            <input type="text" id="p-sizes" placeholder="Available Sizes (Comma separated: S, M, L)">
+            <label>Color Variants (Map images to colors)</label>
+            <div id="v-rows"></div>
+            <button class="btn" style="background: #222; color: #fff; padding: 10px; margin-bottom: 2rem;" onclick="admin.addRow()">+ ADD COLOR</button>
+            <button class="btn" onclick="admin.save()">COMMIT TO STORAGE</button>
+        </div>
+    </div>
+
+    <script>
+        let products = JSON.parse(localStorage.getItem('drp_v6_p')) || [];
+        let cart = JSON.parse(localStorage.getItem('drp_v6_c')) || [];
+        let curP = null, curV = null, curS = null, editId = null;
+
+        const app = {
+            view(id) {
+                document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'));
+                document.getElementById('v-' + id).classList.remove('hidden');
+                if(id === 'shop') this.renderShop();
+                if(id === 'cart') this.renderCart();
+                if(id === 'admin-dash') admin.renderList();
+                window.scrollTo(0,0);
+            },
+
+            renderShop() {
+                const grid = document.getElementById('shop-grid');
+                const live = products.filter(p => p.active);
+                grid.innerHTML = live.length ? live.map(p => `
+                    <div class="product-card" onclick="app.showProduct('${p.id}')">
+                        <img src="${p.variants[0].img}">
+                        <div class="card-info">
+                            <div style="font-family: var(--font-heading); font-size: 0.7rem;">${p.name.toUpperCase()}</div>
+                            <div style="font-weight: 700;">$${p.price}</div>
+                        </div>
+                    </div>
+                `).join('') : "<h2 style='grid-column: 1/-1; opacity: 0.2; text-align: center; padding: 10rem 0;'>NO COLLECTIONS CURRENTLY ACTIVE</h2>";
+            },
+
+            showProduct(id) {
+                curP = products.find(p => p.id === id);
+                curV = curP.variants[0];
+                curS = null;
+                this.view('product');
+                this.renderDetail();
+            },
+
+            renderDetail() {
+                const container = document.getElementById('product-content');
+                container.innerHTML = `
+                    <img src="${curV.img}" class="detail-img">
+                    <div>
+                        <h1 style="font-family: var(--font-heading); font-size: 2.5rem; margin-bottom: 1rem;">${curP.name}</h1>
+                        <p style="font-size: 1.5rem; margin-bottom: 3rem; font-weight: 300;">$${curP.price} USD</p>
+                        
+                        <label>Select Color: ${curV.color}</label>
+                        <div class="swatch-group">
+                            ${curP.variants.map(v => `<div class="swatch ${curV.color === v.color ? 'active' : ''}" style="background: ${v.color}" onclick="app.setVar('${v.color}')"></div>`).join('')}
+                        </div>
+
+                        <label>Select Size: ${curS || 'Required'}</label>
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 3rem;">
+                            ${curP.sizes.map(s => `<div class="size-box ${curS === s ? 'active' : ''}" onclick="app.setSize('${s}')">${s}</div>`).join('')}
+                        </div>
+
+                        <button class="btn" onclick="app.addToCart()" ${!curS ? 'disabled' : ''}>${curS ? 'ADD TO BAG' : 'SELECT SIZE'}</button>
+                    </div>
+                `;
+            },
+
+            setVar(c) { curV = curP.variants.find(v => v.color === c); this.renderDetail(); },
+            setSize(s) { curS = s; this.renderDetail(); },
+
+            addToCart() {
+                cart.push({ uid: Date.now(), name: curP.name, price: curP.price, color: curV.color, size: curS, img: curV.img });
+                this.sync(); this.view('cart');
+            },
+
+            renderCart() {
+                const list = document.getElementById('cart-items');
+                const foot = document.getElementById('cart-footer');
+                if(!cart.length) { list.innerHTML = "<p style='padding: 5rem 0; text-align: center; opacity: 0.4;'>BAG IS CURRENTLY EMPTY</p>"; foot.innerHTML = ""; return; }
+                
+                list.innerHTML = cart.map((item, idx) => `
+                    <div style="display: flex; gap: 2rem; margin-bottom: 2rem; border-bottom: 1px solid var(--border); padding-bottom: 2rem; align-items: center;">
+                        <img src="${item.img}" style="width: 100px; aspect-ratio: 1; object-fit: cover;">
+                        <div style="flex: 1">
+                            <strong style="font-family: var(--font-heading); font-size: 0.7rem;">${item.name}</strong><br>
+                            <small style="opacity: 0.5;">${item.color} • ${item.size}</small>
+                        </div>
+                        <div style="font-weight: 700;">$${item.price}</div>
+                        <button style="background:none; border:none; color:#ff4444; cursor:pointer;" onclick="app.remCart(${idx})">REMOVE</button>
+                    </div>
+                `).join('');
+
+                const total = cart.reduce((a, b) => a + parseFloat(b.price), 0);
+                foot.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; margin: 3rem 0; font-family: var(--font-heading);">
+                        <span>SUBTOTAL</span><span>$${total.toFixed(2)}</span>
+                    </div>
+                    <button class="btn" onclick="app.view('checkout')">CONTINUE TO CHECKOUT</button>
+                `;
+            },
+
+            remCart(idx) { cart.splice(idx, 1); this.sync(); this.renderCart(); },
+
+            processPayment(e) {
+                e.preventDefault();
+                const total = cart.reduce((a, b) => a + parseFloat(b.price), 0);
+                const n = document.getElementById('ship-name').value;
+                const a = document.getElementById('ship-addr').value;
+                const c = document.getElementById('ship-city').value;
+                const z = document.getElementById('ship-zip').value;
+                const co = document.getElementById('ship-country').value;
+                const items = cart.map(i => `${i.name}(${i.color}/${i.size})`).join(', ');
+
+                const memo = `DRIPLY ORDER: ${items} | SHIP TO: ${n}, ${a}, ${c}, ${z}, ${co}`;
+                const url = `https://paypal.me/AdamDupont917/${total.toFixed(2)}?item_name=${encodeURIComponent(memo)}`;
+                
+                cart = []; this.sync();
+                window.location.href = url;
+            },
+
+            sync() {
+                localStorage.setItem('drp_v6_p', JSON.stringify(products));
+                localStorage.setItem('drp_v6_c', JSON.stringify(cart));
+                document.getElementById('cart-count').innerText = cart.length;
+            }
+        };
+
+        const admin = {
+            login() {
+                if(document.getElementById('adm-user').value === 'Tourya' && document.getElementById('adm-pass').value === 'Philipo21') app.view('admin-dash');
+                else alert('AUTHENTICATION FAILED');
+            },
+            renderList() {
+                const list = document.getElementById('admin-list');
+                list.innerHTML = products.map(p => `
+                    <div style="display: flex; gap: 2rem; background: var(--surface); padding: 1.5rem; border: 1px solid var(--border); margin-bottom: 1rem; align-items: center;">
+                        <img src="${p.variants[0].img}" style="width: 50px;">
+                        <div style="flex: 1"><strong>${p.name}</strong></div>
+                        <button class="btn" style="width: auto; padding: 10px 20px;" onclick="admin.toggle('${p.id}')">${p.active ? 'LIVE' : 'HIDDEN'}</button>
+                        <button class="btn" style="width: auto; padding: 10px 20px; background: #333; color: #fff;" onclick="admin.openModal('${p.id}')">EDIT</button>
+                        <button class="btn" style="width: auto; padding: 10px 20px; background: #400; color: #fff;" onclick="admin.del('${p.id}')">✕</button>
+                    </div>
+                `).join('');
+            },
+            openModal(id = null) {
+                editId = id; document.getElementById('admin-modal').classList.remove('hidden');
+                document.getElementById('v-rows').innerHTML = '';
+                if(id) {
+                    const p = products.find(x => x.id === id);
+                    document.getElementById('p-name').value = p.name;
+                    document.getElementById('p-price').value = p.price;
+                    document.getElementById('p-sizes').value = p.sizes.join(',');
+                    p.variants.forEach(v => this.addRow(v.color, v.img));
+                } else {
+                    document.getElementById('p-name').value = ''; document.getElementById('p-price').value = ''; document.getElementById('p-sizes').value = '';
+                    this.addRow();
+                }
+            },
+            addRow(c='', i='') {
+                const r = document.createElement('div')
